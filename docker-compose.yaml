@@ -7,7 +7,7 @@ services:
     build: 
       context: node
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh # Aguarda o 'db' ficar pronto pra seguir a vida (limite de 20 seg, padrão é 10s)
     networks: 
       - node-network
     volumes: 
@@ -16,7 +16,7 @@ services:
     ports: 
       - "3000:3000"
     depends_on: 
-       - db
+       - db # Isso sinaliza que o 'db' deve estar pronto para que o 'app' seja construído. Portanto primeiro vem o 'db' depois o 'app'
 
   db:
     image: mysql:5.7
