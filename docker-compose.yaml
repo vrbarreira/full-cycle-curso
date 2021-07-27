@@ -1,0 +1,39 @@
+version: '3'
+
+# Cada serviço representa um container que queremos subir
+services: 
+
+  app:
+    build: 
+      context: node
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    networks: 
+      - node-network
+    volumes: 
+      - ./node:/usr/src/app
+    tty: true
+    ports: 
+      - "3000:3000"
+    depends_on: 
+       - db
+
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0 # CMD do Dockerfile
+    container_name: db
+    restart: always # Container reinicia sozinho se cair
+    tty: true # Option -t
+    volumes: # Mapeamento de volumes e binds
+      - ./mysql:/var/lib/mysql # Mapeia a pasta ./mysql do host para a /var/lib/mysql do container
+    environment: # Setando variáveis de ambiente (comando 'export' do linux)
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks: 
+      - node-network
+
+    
+
+networks: 
+  node-network:
+    driver: bridge      

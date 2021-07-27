@@ -1,0 +1,29 @@
+version: '3'
+
+# Listagem dos serviços (containers)
+services: 
+
+  # Nome do serviço
+  laravel:
+    build: # Options para construção dos containers
+      context: ./laravel # Pasta aonde está o Dockerfile
+      dockerfile: Dockerfile.prod # Nome do arquivo Dockerfile
+    image: wesleywillians/laravel:prod # Imagem base
+    container_name: laravel # Nome do container
+    networks: # Redes conectadas ao container
+      - laranet
+
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.prod
+    image: wesleywillians/nginx:prod
+    container_name: nginx
+    networks: 
+      - laranet
+    ports: 
+      - "8080:80"
+
+networks: 
+  laranet:
+    driver: bridge      
