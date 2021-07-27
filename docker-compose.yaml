@@ -11,7 +11,7 @@ services:
     networks: 
       - node-network
     volumes: 
-      - ./node:/usr/src/app
+      - ./node:/usr/src/app # Mapeia a pasta ./node do host para a /usr/src/app do container
     tty: true
     ports: 
       - "3000:3000"
