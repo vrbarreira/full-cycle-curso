@@ -29,6 +29,9 @@ RUN rm -rf /var/www/html
 # Copiando conteúdo do /var/www/laravel (stage builder) para o /var/www do stage atual
 COPY --from=builder /var/www/laravel .
 
+# Criando link 'public' para a pasta 'html'
+RUN ln -s public html
+
 # Permissionamento para execução correta do Laravel
 RUN chown -R www-data:www-data /var/www
 
